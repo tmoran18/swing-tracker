@@ -2,6 +2,8 @@ import { getAllShots } from "@/app/actions/shots";
 import AllShotsClient from "@/components/all-shots-client";
 import { Card, CardContent } from "@/components/ui/card";
 
+export const revalidate = 0;
+
 export default async function AllShots() {
   const shots = await getAllShots();
 

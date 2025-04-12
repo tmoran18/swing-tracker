@@ -6,6 +6,8 @@ interface StatisticsPageProps {
   searchParams: Promise<{ club?: string }>;
 }
 
+export const revalidate = 0; // Disable caching and revalidate on every request
+
 export default async function StatisticsPage({ searchParams }: StatisticsPageProps) {
   const { club } = await searchParams;
 
