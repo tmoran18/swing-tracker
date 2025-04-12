@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useGolf } from "@/app/context/GolfContext";
@@ -28,6 +28,36 @@ export function ShotForm() {
   const { selectedClub, setSelectedClub } = useGolf();
   const distanceInputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const clickSoundRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    // Initialize audio on component mount
+    clickSoundRef.current = new Audio("/click.mp3");
+
+    // Preload the sound
+    if (clickSoundRef.current) {
+      clickSoundRef.current.load();
+    }
+  }, []);
+
+  function handleClubSelect(club: string) {
+    // Trigger haptic feedback if supported
+    if (navigator.vibrate) {
+      navigator.vibrate(50); // Short 50ms vibration
+    }
+    // Play sound if audio is ready
+    if (clickSoundRef.current) {
+      clickSoundRef.current.currentTime = 0;
+      clickSoundRef.current
+        .play()
+        .then(() => console.log("Sound played successfully"))
+        .catch((err) => console.error("Error playing sound:", err));
+    } else {
+      console.log("Audio not initialized");
+    }
+
+    setSelectedClub(club);
+  }
 
   async function handleSaveShot() {
     const distance = distanceInputRef.current ? parseInt(distanceInputRef.current.value, 10) : 0;
@@ -79,7 +109,7 @@ export function ShotForm() {
                 variant="outline"
                 className="h-auto py-3 px-2 text-sm data-[state=active]:bg-green-100 dark:data-[state=active]:bg-green-800 data-[state=active]:border-green-600 dark:data-[state=active]:border-green-500 dark:data-[state=active]:text-green-100"
                 data-state={club === selectedClub ? "active" : "inactive"}
-                onClick={() => setSelectedClub(club)}
+                onClick={() => handleClubSelect(club)}
               >
                 {club}
               </Button>
