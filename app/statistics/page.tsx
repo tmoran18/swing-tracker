@@ -3,14 +3,14 @@ import { ThemeToggler } from "@/components/theme-toggler";
 import { getClubStats, getTopConsistentClubs } from "../actions/shots";
 
 interface StatisticsPageProps {
-  searchParams: Promise<{ club?: string }> | { club?: string };
+  searchParams: Promise<{ club?: string }>;
 }
 
 export default async function StatisticsPage({ searchParams }: StatisticsPageProps) {
-  const params = await searchParams;
+  const { club } = await searchParams;
 
   const [{ data: initialClubStats }, { data: initialConsistentClubs }] = await Promise.all([
-    getClubStats(params.club || "Driver"),
+    getClubStats(club || "Driver"),
     getTopConsistentClubs(),
   ]);
 

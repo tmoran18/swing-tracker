@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { deleteShot } from "@/app/actions/shots";
 import { CLUB_VALUE_MAP } from "@/lib/constants";
@@ -22,15 +22,6 @@ export default function AllShotsClient({ initialShots }: AllShotsClientProps) {
   const [selectedClub, setSelectedClub] = useState("");
   const [shots, setShots] = useState<Shot[]>(initialShots);
 
-  // Debug logging
-  useEffect(() => {
-    console.log("Selected club:", selectedClub);
-    console.log(
-      "Filtered shots:",
-      shots.filter((shot) => shot.club === selectedClub)
-    );
-  }, [selectedClub, shots]);
-
   const handleDelete = async (shotId: string) => {
     await deleteShot(shotId);
     setShots(shots.filter((shot) => shot.id !== shotId));
@@ -39,7 +30,6 @@ export default function AllShotsClient({ initialShots }: AllShotsClientProps) {
 
   const filteredShots = selectedClub
     ? shots.filter((shot) => {
-        console.log("Shot club:", shot.club, "Selected club:", selectedClub);
         return shot.club === selectedClub;
       })
     : shots;
@@ -50,7 +40,6 @@ export default function AllShotsClient({ initialShots }: AllShotsClientProps) {
         className="w-full mb-4 p-2 border rounded"
         value={selectedClub}
         onChange={(e) => {
-          console.log("Selected value:", e.target.value);
           setSelectedClub(e.target.value);
         }}
       >
