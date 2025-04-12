@@ -8,7 +8,12 @@ export async function RecentShots() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Recent Shots</CardTitle>
+        <CardTitle>
+          Recent Shots
+          <a href="/all-shots" className="text-blue-500 hover:underline ml-4">
+            View All
+          </a>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

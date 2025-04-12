@@ -154,3 +154,31 @@ export async function getTopConsistentClubs(): Promise<{ data: ConsistentClub[];
     return { data: [], error: "Failed to fetch club consistency data" };
   }
 }
+
+export async function getAllShots(club?: string) {
+  try {
+    let query = supabase.from("shots").select("*").order("created_at", { ascending: false });
+
+    if (club) {
+      query = query.eq("club", club);
+    }
+
+    const { data, error } = await query;
+
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error("Error fetching all shots:", error);
+    return [];
+  }
+}
+
+export async function deleteShot(shotId: string) {
+  try {
+    const { error } = await supabase.from("shots").delete().eq("id", shotId);
+
+    if (error) throw error;
+  } catch (error) {
+    console.error("Error deleting shot:", error);
+  }
+}

@@ -17,7 +17,7 @@ export const Nav = () => {
           <svg
             stroke="currentColor"
             fill="#16a34a"
-            stroke-width="0"
+            strokeWidth="0"
             viewBox="0 0 512 512"
             height="2em"
             width="2em"
